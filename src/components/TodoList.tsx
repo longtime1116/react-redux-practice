@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { TodoItem } from '../components/TodoItem';
 import { Todo } from '../types';
 
 interface Props {
@@ -18,10 +19,6 @@ export class TodoList extends React.Component<Props, State> {
   }
 
   private renderTodo(todo: Todo) {
-    return (
-      <div key={todo.id}>
-        {todo.id}: {todo.title}
-      </div>
-    );
+    return <TodoItem key={todo.id} {...todo} />;
   }
 }
