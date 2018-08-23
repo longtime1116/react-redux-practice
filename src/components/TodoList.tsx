@@ -13,6 +13,14 @@ interface State {
 export class TodoList extends React.Component<Props, State> {
   public state: State = { title: '' };
 
+  private input: HTMLInputElement | null = null;
+
+  public componentDidMount() {
+    if (this.input) {
+      this.input.focus();
+    }
+  }
+
   public render() {
     const { todos } = this.props;
     const { title } = this.state;
@@ -21,7 +29,14 @@ export class TodoList extends React.Component<Props, State> {
       <React.Fragment>
         <div>{todos.map(this.renderTodo)}</div>
         <div>
-          <input type="text" value={title} onChange={this.handleChangeTitle} />
+          <input
+            type="text"
+            value={title}
+            onChange={this.handleChangeTitle}
+            ref={input => {
+              this.input = input;
+            }}
+          />
           <button onClick={this.handleAddTodo}>Add</button>
         </div>
       </React.Fragment>
@@ -44,6 +59,7 @@ export class TodoList extends React.Component<Props, State> {
 
     onAddTodo(title);
     this.reset();
+    this.input.focus();
   };
 
   private changeTitle = (title: string) => {
