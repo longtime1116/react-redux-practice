@@ -30,13 +30,17 @@ export default class TodosContainer extends React.Component<Props, State> {
   private handleAddTodo = (title: string) => {
     const { todos } = this.state;
 
-    const newTodo: Todo = {
+    const newTodo: Todo = this.createTodo(title);
+
+    this.setState({ todos: todos.concat(newTodo) });
+  };
+
+  private createTodo(title: string) {
+    return {
       userId: Math.floor(Math.random() * 1000000),
       id: Math.floor(Math.random() * 1000000),
       title,
       completed: false
     };
-
-    this.setState({ todos: todos.concat(newTodo) });
-  };
+  }
 }
