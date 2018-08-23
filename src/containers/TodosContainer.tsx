@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { TodoList } from '../components/TodoList';
 import { Todo } from '../types';
 
 /**
@@ -40,19 +41,6 @@ export default class TodosContainer extends React.Component<Props, State> {
 
   public render() {
     const { todos } = this.state;
-
-    return (
-      <React.Fragment>
-        <div>{todos.map(this.renderTodo)}</div>
-      </React.Fragment>
-    );
-  }
-
-  private renderTodo(todo: Todo) {
-    return (
-      <div key={todo.id}>
-        {todo.id}: {todo.title}
-      </div>
-    );
+    return <TodoList todos={todos} />;
   }
 }
