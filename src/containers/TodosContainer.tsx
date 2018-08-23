@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { fetchTodos } from '../apis';
+import { ControlPanel } from '../components/ControlPanel';
 import { TodoList } from '../components/TodoList';
 import { Todo } from '../types';
 
@@ -9,6 +10,7 @@ interface State {
 }
 
 export default class TodosContainer extends React.Component<Props, State> {
+  private todoList: TodoList | null = null;
   public state: State = {
     todos: []
   };
@@ -24,7 +26,17 @@ export default class TodosContainer extends React.Component<Props, State> {
 
   public render() {
     const { todos } = this.state;
-    return <TodoList todos={todos} onAddTodo={this.handleAddTodo} />;
+
+    return (
+      <React.Fragment>
+        <TodoList
+          todos={todos}
+          onAddTodo={this.handleAddTodo}
+          ref={todoList => (this.todoList = todoList)}
+        />
+        <ControlPanel onClick={this.handleClickFocusButton} />
+      </React.Fragment>
+    );
   }
 
   private handleAddTodo = (title: string) => {
@@ -33,6 +45,12 @@ export default class TodosContainer extends React.Component<Props, State> {
     const newTodo: Todo = this.createTodo(title);
 
     this.setState({ todos: todos.concat(newTodo) });
+  };
+
+  private handleClickFocusButton = () => {
+    if (this.todoList) {
+      this.todoList.focus();
+    }
   };
 
   private createTodo(title: string) {
