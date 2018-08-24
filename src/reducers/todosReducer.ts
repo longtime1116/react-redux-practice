@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import { Todo } from '../types/CommonTypes';
-import { ActionTypes } from '../types/ActionTypes';
+import { ActionTypes, Action } from '../types/ActionTypes';
 
 export interface TodosState {
   todos: Todo[];
@@ -12,7 +12,7 @@ const initialState: TodosState = {
   loading: true
 };
 
-export const todosReducer: Reducer<TodosState> = (
+export const todosReducer: Reducer<TodosState, Action> = (
   state = initialState,
   action
 ) => {
