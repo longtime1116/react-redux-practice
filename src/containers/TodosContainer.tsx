@@ -63,7 +63,6 @@ export default class TodosContainer extends React.Component<Props, State> {
 
   private createTodo(title: string) {
     return {
-      userId: Math.floor(Math.random() * 1000000),
       id: Math.floor(Math.random() * 1000000),
       title,
       completed: false
