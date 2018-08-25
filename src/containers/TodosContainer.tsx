@@ -1,56 +1,16 @@
-import * as React from 'react';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
-import { ControlPanel } from '../components/ControlPanel';
-import { TodoList } from '../components/TodoList';
 import { RootState } from '../reducers/rootReducer';
 import { Todo } from '../types/CommonTypes';
+import { Todos } from './Todos';
 
-interface Props {
+export interface Props {
   todos: Todo[];
   loading: boolean;
   addTodo: Function;
   fetchTodos: Function;
 }
-interface State {}
-
-class Todos extends React.Component<Props, State> {
-  private todoList: TodoList | null = null;
-
-  public componentDidMount() {
-    const { fetchTodos } = this.props;
-    fetchTodos();
-  }
-
-  public render() {
-    const { todos, loading } = this.props;
-
-    if (loading) {
-      return <div>loading...</div>;
-    }
-    return (
-      <React.Fragment>
-        <TodoList
-          todos={todos}
-          onAddTodo={this.handleAddTodo}
-          ref={todoList => (this.todoList = todoList)}
-        />
-        <ControlPanel onClick={this.handleClickFocusButton} />
-      </React.Fragment>
-    );
-  }
-
-  private handleAddTodo = (title: string) => {
-    const { addTodo } = this.props;
-    addTodo(title);
-  };
-
-  private handleClickFocusButton = () => {
-    if (this.todoList) {
-      this.todoList.focus();
-    }
-  };
-}
+export interface State {}
 
 const mapStateToProps = (state: RootState) => {
   const { todos, loading } = state.todos;
