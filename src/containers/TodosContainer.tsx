@@ -1,36 +1,31 @@
 import * as React from 'react';
-import { fetchTodos, addTodo } from '../apis';
+import { bindActionCreators, Dispatch } from 'redux';
+import * as actions from '../actions';
+import { connect } from 'react-redux';
 import { ControlPanel } from '../components/ControlPanel';
 import { TodoList } from '../components/TodoList';
+import { RootState } from '../reducers/rootReducer';
+import { Action } from '../types/ActionTypes';
 import { Todo } from '../types/CommonTypes';
 
-interface Props {}
-interface State {
+interface Props {
   todos: Todo[];
   loading: boolean;
+  addTodo: Function;
+  fetchTodos: Function;
 }
+interface State {}
 
-export default class TodosContainer extends React.Component<Props, State> {
+class Todos extends React.Component<Props, State> {
   private todoList: TodoList | null = null;
-  public state: State = {
-    todos: [],
-    loading: true
-  };
 
-  public async componentDidMount() {
-    try {
-      const todos = await fetchTodos();
-      this.setState({
-        todos,
-        loading: false
-      });
-    } catch (error) {
-      alert(error);
-    }
+  public componentDidMount() {
+    const { fetchTodos } = this.props;
+    fetchTodos();
   }
 
   public render() {
-    const { todos, loading } = this.state;
+    const { todos, loading } = this.props;
 
     if (loading) {
       return <div>loading...</div>;
@@ -47,12 +42,9 @@ export default class TodosContainer extends React.Component<Props, State> {
     );
   }
 
-  private handleAddTodo = async (title: string) => {
-    const { todos } = this.state;
-
-    const newTodo: Todo = await addTodo(title);
-
-    this.setState({ todos: todos.concat(newTodo) });
+  private handleAddTodo = (title: string) => {
+    const { addTodo } = this.props;
+    addTodo(title);
   };
 
   private handleClickFocusButton = () => {
@@ -61,3 +53,22 @@ export default class TodosContainer extends React.Component<Props, State> {
     }
   };
 }
+
+const mapStateToProps = (state: RootState) => {
+  const { todos, loading } = state.todos;
+  return {
+    todos,
+    loading
+  };
+};
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
+  return {
+    addTodo: bindActionCreators(actions.addTodo, dispatch),
+    fetchTodos: bindActionCreators(actions.fetchTodos, dispatch)
+  };
+};
+
+export const TodosContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Todos);

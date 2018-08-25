@@ -4,8 +4,6 @@ import { Provider } from 'react-redux';
 import { App } from './App';
 import { configureStore } from './store/configureStore';
 
-render(<App />, document.querySelector('#root'));
-
 const store = configureStore();
 
 render(
