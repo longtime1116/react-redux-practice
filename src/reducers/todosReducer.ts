@@ -17,14 +17,11 @@ export const todosReducer: Reducer<TodosState, Action> = (
   action
 ) => {
   switch (action.type) {
-    case ActionTypes.ADD_TODO:
-      // TODO
-      return state;
     case ActionTypes.FETCH_TODOS_REQUEST:
     case ActionTypes.FETCH_TODOS_FAILURE:
       return {
         ...state,
-        todo: [],
+        todos: [],
         loading: true
       };
 
@@ -33,6 +30,11 @@ export const todosReducer: Reducer<TodosState, Action> = (
         ...state,
         todos: action.payload.todos,
         loading: false
+      };
+    case ActionTypes.ADD_TODO_SUCCESS:
+      return {
+        ...state,
+        todos: [...state.todos, action.payload.todo]
       };
     case ActionTypes.TOGGLE_TODO:
       // TODO
